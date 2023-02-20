@@ -1,0 +1,41 @@
+<html>
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js" type="text/javascript"></script>
+
+    <link href="meet.css" rel="stylesheet">
+    <script src="video.js"></script>
+    <script src="localVideo.js"></script>
+    <script src="remoteVideo.js"></script>
+
+    <script src="room.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+</head>
+
+<body>
+<div class="container">
+    <section class="section">
+        <div class="exit" onclick="unjoin()">
+            <i class="material-icons right">exit_to_app</i>
+        </div>
+        <h2>#<span id="room"></span></h2>
+    </section>
+
+    <div id="videos" class="row">
+        <div class="col s4">
+            <div class="video-wrapper">
+                <video id="localVideo" autoplay playsinline muted></video>
+                <div class="offline-message valign-wrapper center-align">Offline</div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<script src="meet.js"></script>
+</body>
+</html>

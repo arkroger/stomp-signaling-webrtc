@@ -21,15 +21,15 @@ toggleMic = () => {
 join = () => {
     const room = document.getElementById("room").value;
     if (document.getElementById("room").value) {
-        window.location = "room.html?room=" + room;
+        window.open("meet.html?room=" + room, "_blank");
     }
 }
 
-const video = new Video(document.getElementById("localVideo"));
+const video = new LocalVideo(document.getElementById("localVideo"));
 
 video.onChangeDeviceState = (e) => {
     refreshDeviceState(e);
 };
-video.initVideo();
+video.initLocalVideo();
 
 
