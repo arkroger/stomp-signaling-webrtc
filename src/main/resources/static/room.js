@@ -20,10 +20,10 @@ class Room {
     
     onNewIceCandidate = (userId, iceCandidate) => {};
 
-    onChangeDeviceState = () => {};
+    onChangeDeviceState = (userId, state) => {};
 
 
-    constructor(id, userId, urlWebSocket, localVideo, onConnected, onUserJoin, onOffer, onAnswer, onNewIceCandidate, onUserExit) {
+    constructor(id, userId, urlWebSocket, localVideo, onConnected, onUserJoin, onOffer, onAnswer, onNewIceCandidate, onUserExit, onChangeDeviceState) {
         this.id = id;
         this.userId = userId;
         this.localVideo = localVideo;
@@ -39,6 +39,7 @@ class Room {
             this.onAnswer = onAnswer;
             this.onNewIceCandidate = onNewIceCandidate;
             this.onUserExit = onUserExit;
+            this.onChangeDeviceState = onChangeDeviceState;
 
         }, (error) => {
             console.error("Erro", error);
@@ -53,6 +54,8 @@ class Room {
                 this.onUserJoin(body.userId, body.data.state);
             } else if (body.data.type === "USER-OFFLINE") {
                 this.onUserExit(body.userId);
+            } else if (body.data.type === "CHANGE-DEVICE-STATE") {
+                this.onChangeDeviceState(body.userId, body.data.state);
             }
         }
     }

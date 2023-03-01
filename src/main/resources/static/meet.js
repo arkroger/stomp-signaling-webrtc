@@ -19,11 +19,10 @@ document.getElementById("room").innerText = roomNumber;
 //     console.log(body);
 // }
 
-createWrapperRemoteElement = (userId, state) => {
+createWrapperRemoteElement = (userId) => {
     let div = document.createElement("div");
     div.setAttribute("id", userId);
     div.classList.add("col", "s4", "remote-video");
-    // div.classList.add("remoteVideo");
 
     let videoWrapper = document.createElement("div");
     videoWrapper.classList.add("video-wrapper");
@@ -35,44 +34,61 @@ createWrapperRemoteElement = (userId, state) => {
     divOffline.classList.add("offline-message");
     divOffline.innerText = "Offline"
 
-    //
-    // let divMic = document.createElement("div");
-    // divMic.innerHTML = `<strong>Mic:</strong><span class="micState">${state?.mic}</span>`;
-    //
-    // let divVideo = document.createElement("div");
-    // divVideo.innerHTML = `<strong>Video:</strong><span class="videoState">${state?.video}</span>`;
-    //
-    // let buttonPip = document.createElement("button");
-    // buttonPip.innerText = 'PIP';
-    // buttonPip.addEventListener('click', (event) => {
-    //     pictureInPicture(userId);
-    // });
-    //
-    // let buttonFull = document.createElement("button");
-    // buttonFull.innerText = 'Full';
-    // buttonFull.addEventListener('click', (event) => {
-    //     fullScreen(userId);
-    // });
-
-    // let divButtons = document.createElement("div");
-    // divButtons.appendChild(buttonPip);
-    // divButtons.appendChild(buttonFull);
-
     let video = document.createElement("video");
 
     video.setAttribute("autoplay", "");
     video.setAttribute("playsinline", "");
 
-
-    // videoWrapper.appendChild(divMic);
-    // videoWrapper.appendChild(divVideo);
-    // div.appendChild(divButtons);
     videoWrapper.appendChild(video);
     videoWrapper.appendChild(divOffline);
-    // videoWrapper.appendChild(divUser);
+
     div.appendChild(videoWrapper);
+    div.appendChild(getDivActions(userId));
 
     return div;
+}
+
+
+getDivActions = (userId) => {
+    let divMic = document.createElement("i");
+    divMic.classList.add("micState");
+    divMic.classList.add("material-icons");
+    divMic.innerHTML = `mic_off`;
+
+    let divVideo = document.createElement("i");
+    divVideo.classList.add("videoState");
+    divVideo.classList.add("material-icons");
+    divVideo.innerHTML = `videocam_off`;
+
+    let buttonPip = document.createElement("a");
+    buttonPip.classList.add("btn");
+    buttonPip.innerHTML = '<i class="material-icons">picture_in_picture</i>';
+    buttonPip.addEventListener('click', (event) => {
+        pictureInPicture(userId);
+    });
+
+    let buttonFull = document.createElement("a");
+    buttonFull.innerHTML = '<i class="material-icons">fullscreen</i>';
+    buttonFull.classList.add("btn");
+    buttonFull.addEventListener('click', (event) => {
+        fullScreen(userId);
+    });
+
+    let divState = document.createElement("div");
+    divState.classList.add("state");
+    divState.appendChild(divMic);
+    divState.appendChild(divVideo);
+
+    let divButtons = document.createElement("div");
+    divButtons.classList.add("buttons")
+    divButtons.appendChild(buttonPip);
+    divButtons.appendChild(buttonFull);
+
+    const actions = document.createElement("div");
+    actions.classList.add("actions")
+    actions.appendChild(divState);
+    actions.appendChild(divButtons)
+    return actions;
 }
 
 unjoin = () => {
@@ -94,7 +110,8 @@ removeWrapperRemoteElement = (userId) => {
 }
 
 createRemoteVideo = (userId, state) => {
-    const videoWrapperElement = createWrapperRemoteElement(userId, state);
+    const videoWrapperElement = createWrapperRemoteElement(userId);
+    changeState(videoWrapperElement, state);
     document.getElementById("videos").appendChild(videoWrapperElement);
 
     const videoRemote = new RemoteVideo(
@@ -108,7 +125,6 @@ createRemoteVideo = (userId, state) => {
     );
 
     videoRemote.onOffLine = (userId) => {
-
         onUserExit(userId);
     }
 
@@ -154,10 +170,47 @@ onAnswer = async (userId, answer) => {
 onNewIceCandidate = (userId, iceCandidate) => {
     const remoteVideo = room.getUser(userId);
     remoteVideo.addIceCandidate(iceCandidate);
+}
 
+onChangeDevice = (userId, state) => {
+    changeState(document.getElementById(userId), state);
+}
+
+changeState = (userElement, state) => {
+    const micState = userElement.getElementsByClassName("micState")[0];
+    const videoState = userElement.getElementsByClassName("videoState")[0];
+
+    micState.innerText = (state.mic)?'mic':'mic_off';
+    videoState.innerText = (state.video)?'videocam':'videocam_off';
+}
+
+pictureInPicture = async (userId) => {
+    if (document.pictureInPictureElement) {
+        await document.exitPictureInPicture();
+    } else if (document.pictureInPictureEnabled) {
+        let video = room.getUser(userId);
+        await video.videoElement.requestPictureInPicture();
+    }
+}
+
+fullScreen = async (userId) => {
+    let video = room.getUser(userId);
+    await video.videoElement.requestFullscreen();
+}
+
+toggleVideo = (localVideo) => {
+    localVideo.toggleVideo();
+    room.sendMessage({ type: "CHANGE-DEVICE-STATE", state: localVideo.getDeviceStateConfig()});
+}
+
+toggleMic = (localVideo) => {
+    localVideo.toggleMic();
 }
 
 const localVideo = new LocalVideo(document.getElementById("localVideo"));
+localVideo.onChangeDeviceState = (e) => {
+    refreshDeviceState(e, document.getElementById("controls"));
+};
 localVideo.initLocalVideo().then(() => {
     room = new Room(
         roomNumber,
@@ -171,15 +224,7 @@ localVideo.initLocalVideo().then(() => {
         onOffer,
         onAnswer,
         onNewIceCandidate,
-        onUserExit
+        onUserExit,
+        onChangeDevice
     );
 });
-
-
-
-
-
-
-
-
-

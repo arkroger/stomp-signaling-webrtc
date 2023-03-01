@@ -6,7 +6,7 @@
         <link href="index.css" rel="stylesheet">
         <script src="video.js"></script>
         <script src="localVideo.js"></script>
-
+        <script src="controls.js"></script>
 
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </head>
@@ -33,16 +33,16 @@
                 </div>
 
                 <div id="controls" class="controls center-align control-video-off control-mic-off">
-                    <a class="btn-floating btn-large mic-on" onclick="toggleMic()">
+                    <a class="btn-floating btn-large mic-on" onclick="toggleMic(video)">
                         <i class="material-icons medium">mic</i>
                     </a>
-                    <a class="btn-floating btn-large red darken-1 mic-off" onclick="toggleMic()">
+                    <a class="btn-floating btn-large red darken-1 mic-off" onclick="toggleMic(video)">
                         <i class="material-icons medium ">mic_off</i>
                     </a>
-                    <a class="btn-floating btn-large video-on" onclick="toggleVideo()">
+                    <a class="btn-floating btn-large video-on" onclick="toggleVideo(video)">
                         <i class="material-icons medium">videocam</i>
                     </a>
-                    <a class="btn-floating btn-large red darken-1 video-off" onclick="toggleVideo()">
+                    <a class="btn-floating btn-large red darken-1 video-off" onclick="toggleVideo(video)">
                         <i class="material-icons medium">videocam_off</i>
                     </a>
                 </div>

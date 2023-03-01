@@ -1,14 +1,3 @@
-refreshDeviceState = (state) => {
-    const controls = document.getElementById("controls");
-
-    if (controls && state) {
-        controls.classList.add((state.mic)?'control-mic-on':'control-mic-off');
-        controls.classList.remove((state.mic)?'control-mic-off':'mcontrol-ic-on');
-
-        controls.classList.add((state.video)?'control-video-on':'control-video-off');
-        controls.classList.remove((state.video)?'control-video-off':'control-video-on');
-    }
-}
 
 toggleVideo = () => {
     video.toggleVideo();
@@ -26,9 +15,8 @@ join = () => {
 }
 
 const video = new LocalVideo(document.getElementById("localVideo"));
-
 video.onChangeDeviceState = (e) => {
-    refreshDeviceState(e);
+    refreshDeviceState(e, document.getElementById("controls"));
 };
 video.initLocalVideo();
 

@@ -1,0 +1,56 @@
+
+video::-webkit-media-controls-play-button {
+    display:none !important;
+}
+video::-webkit-media-controls-timeline {
+    display:none !important;
+}
+video::-webkit-media-controls-current-time-display{
+    display:none !important;
+}
+video::-webkit-media-controls-time-remaining-display {
+    display:none !important;
+}
+video::-webkit-media-controls-mute-button {
+    display:none !important;
+}
+video::-webkit-media-controls-toggle-closed-captions-button {
+    display:none !important;
+}
+video::-webkit-media-controls-volume-slider {}
+
+.controls {
+    height: 70px;
+}
+
+.controls.control-video-on .video-on{
+    display: inline-block;
+}
+
+.controls.control-video-on .video-off{
+    display: none;
+}
+
+.controls.control-video-off .video-on{
+    display: none;
+}
+
+.controls.control-video-off .video-off{
+    display: inline-block;
+}
+
+.controls.control-mic-on .mic{
+    display: inline-block;
+}
+
+.controls.control-mic-on .mic-off{
+    display: none;
+}
+
+.controls.control-mic-off .mic-on{
+    display: none;
+}
+
+.controls.control-mic-off .mic-off{
+    display: inline-block;
+}

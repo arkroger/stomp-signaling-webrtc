@@ -14,35 +14,3 @@ video {
     bottom: 0;
     top: -70px;
 }
-
-.controls.control-video-on .video-on{
-    display: inline-block;
-}
-
-.controls.control-video-on .video-off{
-    display: none;
-}
-
-.controls.control-video-off .video-on{
-    display: none;
-}
-
-.controls.control-video-off .video-off{
-    display: inline-block;
-}
-
-.controls.control-mic-on .mic{
-    display: inline-block;
-}
-
-.controls.control-mic-on .mic-off{
-    display: none;
-}
-
-.controls.control-mic-off .mic-on{
-    display: none;
-}
-
-.controls.control-mic-off .mic-off{
-    display: inline-block;
-}
